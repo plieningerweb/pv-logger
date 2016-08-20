@@ -14,6 +14,7 @@ create a config file `config.yaml`:
 ```
 archive_older_than_days: 30
 # path to sqlite database
+# change to file for permanent storage (!!)
 engine: "sqlite:///:memory:"
 influx:
   dbname: pv-nodes
@@ -27,6 +28,8 @@ tags:
 port: "/dev/ttyUSB*"
 inverter_ids: [1,2,3]
 read_interval_seconds: 10
+...
+[not up to date, check config.yaml as example]
 ```
 
 run logger in folder where `config.yaml` is located
