@@ -1,0 +1,15 @@
+archive_older_than_days: 30
+# path to sqlite database
+engine: "sqlite:///:memory:"
+influx:
+  dbname: pv-nodes
+  host: localhost
+  password: no-need
+  port: 8086
+  user: no-need
+tags:
+  host: testhost.de
+  region: europe
+port: "/dev/ttyUSB*"
+inverter_ids: [1,2,3]
+read_interval_seconds: 10
