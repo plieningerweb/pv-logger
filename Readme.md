@@ -1,4 +1,4 @@
-# Pytho PV Logger
+# Python PV Logger
 
 Logging of photovoltaic inverters
 * to local cache (sqlite)
@@ -41,3 +41,24 @@ TODO
 ## SMA Sunny Mini Central over Bluetooth
 
 TODO
+
+## Additional Statistics
+- uptime (TODO)
+- last request status
+- reboot reason (TODO)
+
+## Watchdog Manager
+
+Implemenetd in all loggers, some minor differences.
+
+#### Registered Checks:
+- no internet for some amount of time
+- no port (ttyUSB) found for some amount of time
+
+#### Check for Reboot:
+- check need for reboot
+    - regularly check a function or result set by user
+    - register function to check and how often it has to fail in a row
+- check if uptime enough
+- log reboot reason
+- reboot

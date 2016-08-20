@@ -6,6 +6,7 @@ import logging
 import time
 import traceback
 import os
+import datetime
 
 from sqlite_influx import Config
 
@@ -24,6 +25,20 @@ Config.config.update(config_yaml)
 # based on config data
 from sqlite_influx import sqlite
 from kacors485 import kacors485
+from pv_logger import watchdog
+
+wdog_manager = watchdog.Manager()
+# setup checks at import, because also in functions used (not only in main)
+check_conf = Config.config['checks']['internet_connection']
+wdog_manager.register_check('internet_connection',
+    datetime.timedelta(seconds=check_conf['interval_seconds']),
+    min_fails_in_row=check_conf['min_fails_in_row'],
+    callback=watchdog.test_internet_connection)
+
+check_conf = Config.config['checks']['tty_usb_found']
+wdog_manager.register_check('tty_usb_found',
+    datetime.timedelta(seconds=check_conf['interval_seconds']),
+    min_fails_in_row=check_conf['min_fails_in_row'])
 
 def read_inverter(kaco, inverter_id):
     #read inverter with address i
@@ -39,6 +54,9 @@ def read_all_inverter():
     measurements = {}
     try:
         kaco = kacors485.KacoRS485(Config.config['port'])
+
+        # if we make it till here without Exception, RS485 port was found
+        wdog_manager.update_result('tty_usb_found', True)
 
         inverters = Config.config['inverter_ids']
         for i in inverters:
@@ -80,9 +98,11 @@ def main_loop():
     sqlite.sync_to_influx()
     sqlite.archive(Config.config['archive_older_than_days'])
 
+    # run watchdog manager
+    wdog_manager.run()
+
 def main():
     # run main loop
-
     while True:
         main_loop()
         time.sleep(Config.config['read_interval_seconds'])
