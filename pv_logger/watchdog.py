@@ -45,8 +45,9 @@ def reboot():
     Returns:
         success (bool): If reboot command was successfull
     """
-    # shutdown in 3 minutes
-    res = os.system("sudo -n shutdown -r +3")
+    # shutdown now, rpi has no realtime clock
+    # therefore future shutdowns might become a problem
+    res = os.system("sudo -n shutdown -r now")
     if res == 0:
         return True
     else:
