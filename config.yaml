@@ -24,3 +24,6 @@ checks:
 inverter_type: "kaco"
 kaco_port: "/dev/ttyUSB*"
 kaco_inverter_ids: [1,2,3]
+
+# specific for sma_rs485
+sma_rs485_max_devices: 9

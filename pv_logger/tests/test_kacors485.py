@@ -8,7 +8,7 @@ except ImportError:
 
 from pv_logger import logger as pvlogger
 
-pvlogger.Config.config['type'] = 'kaco'
+pvlogger.Config.config['inverter_type'] = 'kaco'
 
 class HighlevelTest(unittest.TestCase):
     def get_rows(self):
@@ -30,6 +30,10 @@ class HighlevelTest(unittest.TestCase):
 
         self.assertEqual(rows[0]['fields']['last_request_status'], 'error')
         self.assertEqual(len(rows), 1)
+
+        module_loaded = ('kaco.py' in repr(rows[0]['fields']))
+        self.assertEqual(module_loaded, True)
+
 
     @mock.patch('serial.Serial', spec=serial.Serial)
     def test_answers(self, serial_mock):

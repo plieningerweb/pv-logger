@@ -24,7 +24,7 @@ Config.config.update(config_yaml)
 # based on config data
 from sqlite_influx import sqlite
 from pv_logger import watchdog
-from pv_logger import kaco
+from pv_logger import kaco, sma_rs485
 
 wdog_manager = watchdog.Manager()
 # setup checks at import, because also in functions used (not only in main)
@@ -41,8 +41,11 @@ wdog_manager.register_check('port_found',
 
 
 def read_data():
-    if Config.config['inverter_type'] == 'kaco':
+    inverter_type = Config.config['inverter_type']
+    if inverter_type == 'kaco':
         return kaco.read_all_inverter(wdog_manager)
+    elif inverter_type == 'sma_rs485':
+        return sma_rs485.read_all_inverter(wdog_manager)
 
 def main_loop():
     # get measurements
