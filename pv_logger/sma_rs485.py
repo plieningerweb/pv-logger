@@ -1,5 +1,6 @@
 import logging
 import traceback
+import os
 
 from sqlite_influx import Config
 from pyyasdi.objects import Plant
@@ -11,6 +12,9 @@ def read_all_inverter(wdog_manager):
 
     measurements = {}
     try:
+        if not os.path.exists('yasdi.ini'):
+            raise Exception('could not find yasdi.ini')
+
         plant = Plant(debug=1,
             max_devices=Config.config['sma_rs485_max_devices'])
 

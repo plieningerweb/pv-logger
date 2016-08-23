@@ -27,7 +27,7 @@ class HighlevelTest(unittest.TestCase):
         self.remove_all_rows()
 
         self.assertEqual(rows[0]['fields']['last_request_status'], 'error')
-        self.assertEqual(len(rows), 1)
+        self.assertEqual(len(rows), 2)
 
         sma_rs485_loaded = ('sma_rs485.py' in repr(rows[0]['fields']))
         self.assertEqual(sma_rs485_loaded, True)

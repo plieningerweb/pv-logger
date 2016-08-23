@@ -51,6 +51,13 @@ def main_loop():
     # get measurements
     measurements = read_data()
 
+    # append more information
+    uptime_app = datetime.datetime.now() - wdog_manager.start_time
+    measurements['uptime'] = {
+        'node': str(watchdog.get_uptime()),
+        'app': str(uptime_app)
+    }
+
     # store measurements
     sqlite.store_dicts(measurements)
 

@@ -29,7 +29,7 @@ class HighlevelTest(unittest.TestCase):
         self.remove_all_rows()
 
         self.assertEqual(rows[0]['fields']['last_request_status'], 'error')
-        self.assertEqual(len(rows), 1)
+        self.assertEqual(len(rows), 2)
 
         module_loaded = ('kaco.py' in repr(rows[0]['fields']))
         self.assertEqual(module_loaded, True)
@@ -55,7 +55,7 @@ class HighlevelTest(unittest.TestCase):
 
         # assume that if 3 answers and one status is written
         # everything was working
-        self.assertEqual(len(rows), 4)
+        self.assertEqual(len(rows), 5)
 
     def serial_mock_in_waiting(self):
         """return 1 or 0 based on number of calls"""

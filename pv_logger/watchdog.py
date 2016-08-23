@@ -46,7 +46,7 @@ def reboot():
         success (bool): If reboot command was successfull
     """
     # shutdown in 3 minutes
-    res = os.system("shutdown -r +3")
+    res = os.system("sudo -n shutdown -r +3")
     if res == 0:
         return True
     else:
