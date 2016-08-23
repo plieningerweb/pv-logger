@@ -10,14 +10,17 @@ influx:
 tags:
   host: testhost.de
   region: europe
-port: "/dev/ttyUSB*"
-inverter_ids: [1,2,3]
 read_interval_seconds: 10
 min_uptime_seconds_before_reboot: 900
 checks:
   internet_connection:
     interval_seconds: 900 # 15 minutes
     min_fails_in_row: 2
-  tty_usb_found:
+  port_found:
     interval_seconds: 600 # 10 minutes
     min_fails_in_row: 3
+
+# specific for inverter type
+inverter_type: "kaco"
+kaco_port: "/dev/ttyUSB*"
+kaco_inverter_ids: [1,2,3]

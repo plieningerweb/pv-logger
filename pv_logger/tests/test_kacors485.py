@@ -6,22 +6,24 @@ try:
 except ImportError:
     import mock
 
-from pv_logger import kaco
+from pv_logger import logger as pvlogger
+
+pvlogger.Config.config['type'] = 'kaco'
 
 class HighlevelTest(unittest.TestCase):
     def get_rows(self):
-        rows = kaco.sqlite.session.query(kaco.sqlite.History).all()
-        rows_converted = [kaco.sqlite.history_to_dict(row) for row in rows]
+        rows = pvlogger.sqlite.session.query(pvlogger.sqlite.History).all()
+        rows_converted = [pvlogger.sqlite.history_to_dict(row) for row in rows]
         for item in rows_converted:
             print(item)
 
         return rows_converted
 
     def remove_all_rows(self):
-        kaco.sqlite.session.query(kaco.sqlite.History).delete()
+        pvlogger.sqlite.session.query(pvlogger.sqlite.History).delete()
 
     def test_loop(self):
-        kaco.main_loop()
+        pvlogger.main_loop()
 
         rows = self.get_rows()
         self.remove_all_rows()
@@ -32,7 +34,7 @@ class HighlevelTest(unittest.TestCase):
     @mock.patch('serial.Serial', spec=serial.Serial)
     def test_answers(self, serial_mock):
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        kaco.Config.config['port'] = os.path.join(dir_path, 'test_ttyUSB*')
+        pvlogger.Config.config['kaco_port'] = os.path.join(dir_path, 'test_ttyUSB*')
 
         # reset mock state
         self.serial_mock_in_waiting_index = 0
@@ -42,7 +44,7 @@ class HighlevelTest(unittest.TestCase):
         instance.inWaiting.side_effect = self.serial_mock_in_waiting
         instance.readline.side_effect = self.serial_mock_return
 
-        kaco.main_loop()
+        pvlogger.main_loop()
 
         rows = self.get_rows()
         self.remove_all_rows()
